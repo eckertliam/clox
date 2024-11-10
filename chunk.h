@@ -3,11 +3,12 @@
 
 #include "common.h"
 #include "memory.h"
+#include "value.h"
 
 /// Represents the different opcodes
 typedef enum {
-    OP_RETURN,
     OP_CONSTANT,
+    OP_RETURN,
 } OpCode;
 
 /// Represents a chunk of bytecode
@@ -18,6 +19,10 @@ typedef struct {
     int count;
     // capacity of the code array
     int capacity;
+    // array of constants
+    ValueArray constants;
+    // line number for debugging
+    int* lines;
 } Chunk;
 
 /// Initialize a chunk
@@ -27,8 +32,10 @@ void initChunk(Chunk* chunk);
 void freeChunk(Chunk* chunk);
 
 /// Append a byte to the chunk
-void writeChunk(Chunk* chunk, uint8_t byte);
+void writeChunk(Chunk* chunk, uint8_t byte, int line);
 
 
+/// Add a constant to the chunk and return the index
+int addConstant(Chunk* chunk, Value value);
 
 #endif
